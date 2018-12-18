@@ -19,7 +19,7 @@
       "id": 4,
       "availability": ["Monday", "Tuesday", "Friday"],
       "payrate": 12.25
-    },
+    }
   ],
   "shifts": [
     {
@@ -37,6 +37,6 @@
     {
       "id": 4,
       "day": ["Thursday"]
-    },
+    }
   ]
 }
