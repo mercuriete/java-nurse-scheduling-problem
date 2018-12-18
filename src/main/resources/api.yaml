@@ -1,62 +1,111 @@
----
 openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: Swagger Petstore
+  title: Nurse Scheduling
   license:
     name: MIT
 servers:
   - url: http://petstore.swagger.io/v1
 paths:
-  /pets:
-    get:
-      summary: List all pets
-      operationId: listPets
-      tags:
-        - pets
+  /schedule:
+    post:
+      requestBody:
+        description: A list of workers and shifts
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/scheduleRequest'
       responses:
         '200':
-          description: A paged array of pets
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
+          description: A matching and suboptimal status
           content:
-            application/json:
+            application/json:    
               schema:
-                $ref: "#/components/schemas/Pets"
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/scheduleResponse"
 components:
   schemas:
-    Pet:
+    worker:
       required:
         - id
-        - name
+        - availability
+        - payrate
       properties:
         id:
           type: integer
           format: int64
-        name:
-          type: string
-        tag:
-          type: string
-    Pets:
+        availability:
+          type: array
+          items:
+            $ref: "#/components/schemas/day"
+        payrate:
+          type: number
+          format: float64
+    workers:
       type: array
       items:
-        $ref: "#/components/schemas/Pet"
-    Error:
+        $ref: "#/components/schemas/worker"
+      minItems: 1
+    day:
+      type: string
+      enum:
+        - Monday
+        - Tuesday
+        - Wednesday
+        - Thursday
+        - Friday
+        - Saturday
+        - Sunday
+    shift:
       required:
-        - code
-        - message
+        - id
+        - day
       properties:
-        code:
+        id:
           type: integer
-          format: int32
-        message:
-          type: string
+          format: int64
+        day:
+          type: array
+          items:
+            $ref: '#/components/schemas/day'
+          minItems: 1
+          maxItems: 1
+    shifts:
+      type: array
+      items:
+        $ref: "#/components/schemas/shift"
+      minItems: 1
+    match:
+      required:
+      - workerId
+      - shiftId
+      properties:
+        workerId:
+          type: integer
+          format: int64
+        shiftId:
+          type: integer
+          format: int64
+    scheduleRequest:
+      required:
+        - workers
+        - shifts
+      properties:
+        workers:
+            $ref: "#/components/schemas/workers"
+        shifts:
+          $ref: "#/components/schemas/shifts"
+    matching:
+      type: array
+      items:
+        $ref: "#/components/schemas/match"
+    scheduleResponse:
+      required:
+        - matching
+        - suboptimal
+      properties:
+        matching:
+            $ref: "#/components/schemas/matching"
+        suboptimal:
+          type: boolean
+          format: boolean
