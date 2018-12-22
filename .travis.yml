@@ -2,5 +2,9 @@ language: java
 jdk:
 - oraclejdk8
 script:
+- sudo mkdir /usr/lib64
+- wget https://github.com/oliviercailloux/google-or-tools-java/raw/master/lib/libortools.so
+- wget https://github.com/oliviercailloux/google-or-tools-java/raw/master/lib/libjniortools.so
+- sudo cp lib*.so /usr/lib64
 - mvn install
 
