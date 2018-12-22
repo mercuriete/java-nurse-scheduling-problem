@@ -53,7 +53,13 @@
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 		</dependency>
-		<!--Springboot dependencies -->
+		<!-- Google OR Tools -->
+		<dependency>
+			<groupId>io.github.oliviercailloux</groupId>
+			<artifactId>google-or-tools</artifactId>
+			<version>6.7.2</version>
+		</dependency>
+		<!--Springboot test dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
