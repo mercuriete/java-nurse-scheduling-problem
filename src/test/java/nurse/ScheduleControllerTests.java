@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Scanner;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,45 +25,26 @@ public class ScheduleControllerTests {
 	@Autowired
 	private MockMvc mockMvc;
 
+	public String loadResource(String path) {
+		try (Scanner in = new Scanner(this.getClass().getResourceAsStream(path), "UTF-8")) {
+			return in.useDelimiter("\\A").next();
+		}
+	}
+
 	@Test
-	public void testRequestSchedule() throws Exception {
-		this.mockMvc.perform(post("/schedule").contentType(MediaType.APPLICATION_JSON).content(
-				"{\n" + 
-				"  \"workers\": [\n" + 
-				"    {\n" + 
-				"      \"id\": 1,\n" + 
-				"      \"availability\": [\"Tuesday\"],\n" + 
-				"      \"payrate\": 7.50\n" + 
-				"    },\n" + 
-				"    {\n" + 
-				"      \"id\": 2,\n" + 
-				"      \"availability\": [\"Monday\"],\n" + 
-				"      \"payrate\": 9.00\n" + 
-				"    },\n" + 
-				"    {\n" + 
-				"      \"id\": 3,\n" + 
-				"      \"availability\": [\"Friday\"],\n" + 
-				"      \"payrate\": 8.00\n" + 
-				"    }\n" + 
-				"  ],\n" + 
-				"  \"shifts\": [\n" + 
-				"    {\n" + 
-				"      \"id\": 1,\n" + 
-				"      \"day\": [\"Monday\"]\n" + 
-				"    },\n" + 
-				"    {\n" + 
-				"      \"id\": 2,\n" + 
-				"      \"day\": [\"Tuesday\"]\n" + 
-				"    },\n" + 
-				"    {\n" + 
-				"      \"id\": 3,\n" + 
-				"      \"day\": [\"Friday\"]\n" + 
-				"    }\n" + 
-				"  ]\n" + 
-				"}\n" + 
-				""
-				)).andDo(print()).andExpect(status().isOk())
-		        .andExpect(jsonPath("suboptimal", is(true)));
+	public void testRequestScheduleExample1() throws Exception {
+		this.mockMvc
+				.perform(post("/schedule").contentType(MediaType.APPLICATION_JSON)
+				.content(loadResource("../example_1.json")))
+				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("suboptimal", is(true)));
+	}
+
+	@Test
+	public void testRequestScheduleExample2() throws Exception {
+		this.mockMvc
+				.perform(post("/schedule").contentType(MediaType.APPLICATION_JSON)
+				.content(loadResource("../example_2.json")))
+				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("suboptimal", is(true)));
 	}
 
 }
