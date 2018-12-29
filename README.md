@@ -2,6 +2,9 @@
 
 [![Build Status](https://travis-ci.org/mercuriete/java-nurse-scheduling-problem.svg?branch=master)](https://travis-ci.org/mercuriete/java-nurse-scheduling-problem)
 
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.mercuriete%3Ajava-nurse-scheduling-problem&metric=alert_status
+)](https://sonarcloud.io/dashboard?id=com.mercuriete%3Ajava-nurse-scheduling-problem)
+
 ## Introduction
 
 Welcome to this coding exercise. We hope you enjoy doing this

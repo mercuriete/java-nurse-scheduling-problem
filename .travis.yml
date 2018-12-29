@@ -1,10 +1,17 @@
 language: java
 jdk:
 - oraclejdk8
+
+addons:
+  sonarcloud:
+    organization: "mercuriete-github"
+    token:
+      secure: "NODY43MARtZC9cFhYgTPQYvYY6B8kbDT80bbljcSzW8/fe3z5ItO8uDpy8VIekr3gdZSQI4VZgd0GttPlLgAMth3OlUIEb1J1CWNdfQPf4q1FDuXrYU6eFOb6GhEhTo3nrZSMVzG+qxq5QKQpu+y+X6tU2Tin2IXhpQz6iPGN8uPjvM8vtIZpkPuMEBFIQXZQ0nm0oTeCOuFlG/Bp1FVBOaWLoW/fGexDhudsQ8w94l+UIUXw2ujvKjoZTNCMetcl9sXpsb19ld0aE2XsPNVYyOiBL4neKE3aAyuNVGH3XnWWqa179EKQlJF1oN8mT020GCcC7U0pt3yuU25PmyZe2PRIGqih7rSYF6eFrWT6zlJwNdWojdACALUV4S6/V9iK3mxS3xi2UK/qvBTiFyoGOl3IZreBjnYmPM5xhY+Gk/xnxhveNWttIGaTfmpZiAw3rsmw3HoF3/D61OuHuXompYSetEUs0IlFBKwRS63au46xjnc9LAnFAp+XiRVcQFByqFqAbrHs3CYd1SPO5GdvcuBTSSNFTybugczz1Uv01IfK/ZTtMC/E8vlKtIZa85reHOzTvayKtnIfO50RuEieTkQh++8RGHZJu7Hkvbi1j3Qw+Sc8OEoHGWEdOXOnAGnc1/mXkkFiO1xuEskScrmoAgHXcTChAUh14FlYtE0bKc="
+
 script:
 - sudo mkdir /usr/lib64
 - wget https://github.com/oliviercailloux/google-or-tools-java/raw/master/lib/libortools.so
 - wget https://github.com/oliviercailloux/google-or-tools-java/raw/master/lib/libjniortools.so
 - sudo cp lib*.so /usr/lib64
-- mvn install
+- mvn org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 
