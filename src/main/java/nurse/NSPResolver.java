@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.ortools.constraintsolver.Assignment;
@@ -22,15 +24,17 @@ import com.mercuriete.nurse.model.Workers;
 @Service
 public class NSPResolver {
 	static {
-		System.out.println(System.getProperty("java.library.path"));
 		System.loadLibrary("jniortools");
 	}
+
+	@Autowired
+	Logger logger;
 
 	Matching resolve(Shifts shifts, Workers workers) {
 		// Creates the solver.
 		Solver solver = new Solver("schedule_shifts");
 
-		IntVar[] shifts_flat = new IntVar[shifts.size()];
+		IntVar[] shiftFlat = new IntVar[shifts.size()];
 		int i = 0;
 		for (Shift s : shifts) {
 			// for all shift we have to create a integer variable
@@ -45,35 +49,37 @@ public class NSPResolver {
 			}
 
 			// the available workers are the domain of the Integer Variable
-			shifts_flat[i++] = solver.makeIntVar(toArrayPrimitive(availableworkers), s.getDay().toString());
-			;
+			shiftFlat[i++] = solver.makeIntVar(toArrayPrimitive(availableworkers), s.getDay().toString());
 		}
 
 		// Create the decision builder
-		DecisionBuilder db = solver.makePhase(shifts_flat, solver.CHOOSE_FIRST_UNBOUND, solver.ASSIGN_MIN_VALUE);
+		DecisionBuilder db = solver.makePhase(shiftFlat, Solver.CHOOSE_FIRST_UNBOUND, Solver.ASSIGN_MIN_VALUE);
 		// Create the solution collector.
 		Assignment solution = solver.makeAssignment();
 
-		solution.add(shifts_flat);
+		solution.add(shiftFlat);
 		SolutionCollector collector = solver.makeAllSolutionCollector(solution);
 
 		solver.solve(db, collector);
-		System.out.println("Solutions found:" + collector.solutionCount());
-		System.out.println("Time:" + solver.wallTime() + "ms");
+		logger.info(() -> "Solutions found: " + collector.solutionCount());
+		logger.info(() -> "Time: " + solver.wallTime() + " ms");
 
-		//Print all Solutions but return only first
+		// Print all Solutions but return only first
 		Matching output = new Matching();
 		for (int sol = 0; sol < collector.solutionCount(); sol++) {
-			System.out.println("Solution number: " + sol);
-			for (i = 0; i < shifts_flat.length; i++) {
+			final int tempsol = sol;
+			logger.info(() -> "Solution number: " + tempsol);
+			for (i = 0; i < shiftFlat.length; i++) {
 				if (sol == 0) {
 					// only return first valid solution
 					Match m = new Match();
 					m.setShiftId((long) (i + 1));
-					m.setWorkerId(collector.value(sol, shifts_flat[i]));
+					m.setWorkerId(collector.value(sol, shiftFlat[i]));
 					output.add(m);
 				}
-				System.out.println("Shift: " + (i + 1) + ", assigned to: " + collector.value(sol, shifts_flat[i]));
+				final int tempi = i;
+				logger.info(
+						() -> "Shift: " + (tempi + 1) + ", assigned to: " + collector.value(tempsol, shiftFlat[tempi]));
 			}
 		}
 		return output;
