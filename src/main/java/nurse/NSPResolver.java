@@ -59,6 +59,7 @@ public class NSPResolver {
 
 		solver.solve(db, collector);
 		System.out.println("Solutions found:" + collector.solutionCount());
+		System.out.println("Solutions found:" + collector.solutionCount());
 		System.out.println("Time:" + solver.wallTime() + "ms");
 
 		//Print all Solutions but return only first
