@@ -1,5 +1,5 @@
 #Build environment (maven java jdk)
-FROM maven AS build
+FROM maven:3-openjdk-8 AS build
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 RUN mvn package spring-boot:repackage -DskipTests
