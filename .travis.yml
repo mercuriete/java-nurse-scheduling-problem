@@ -14,5 +14,4 @@ script:
 - wget https://github.com/oliviercailloux/google-or-tools-java/raw/master/lib/libortools.so
 - wget https://github.com/oliviercailloux/google-or-tools-java/raw/master/lib/libjniortools.so
 - sudo cp lib*.so /usr/lib64
-- mvn org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
-
+- mvn org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar

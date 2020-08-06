@@ -1,4 +1,4 @@
-openapi: "3.0.0"
+openapi: "3.0.3"
 info:
   version: 1.0.0
   title: Nurse Scheduling
@@ -20,7 +20,7 @@ paths:
         '200':
           description: A matching and suboptimal status
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/scheduleResponse"
 components:
