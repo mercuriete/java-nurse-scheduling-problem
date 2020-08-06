@@ -15,11 +15,8 @@ import com.google.ortools.constraintsolver.IntVar;
 import com.google.ortools.constraintsolver.SolutionCollector;
 import com.google.ortools.constraintsolver.Solver;
 import com.mercuriete.nurse.model.Match;
-import com.mercuriete.nurse.model.Matching;
 import com.mercuriete.nurse.model.Shift;
-import com.mercuriete.nurse.model.Shifts;
 import com.mercuriete.nurse.model.Worker;
-import com.mercuriete.nurse.model.Workers;
 
 @Service
 public class NSPResolver {
@@ -30,7 +27,7 @@ public class NSPResolver {
 	@Autowired
 	Logger logger;
 
-	Matching resolve(Shifts shifts, Workers workers) {
+	List<Match> resolve(List<Shift> shifts, List<Worker> workers) {
 		// Creates the solver.
 		Solver solver = new Solver("schedule_shifts");
 
@@ -65,7 +62,7 @@ public class NSPResolver {
 		logger.info(() -> "Time: " + solver.wallTime() + " ms");
 
 		// Print all Solutions but return only first
-		Matching output = new Matching();
+		List<Match> output = new ArrayList<>();
 		for (int sol = 0; sol < collector.solutionCount(); sol++) {
 			final int tempsol = sol;
 			logger.info(() -> "Solution number: " + tempsol);
