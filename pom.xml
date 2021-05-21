@@ -33,6 +33,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+    </dependency>
     <!--Swagger annotations -->
     <dependency>
       <groupId>io.swagger</groupId>
@@ -94,7 +98,7 @@
         <!--Plugin for generating stubs from swagger definition -->
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>4.3.1</version>
+        <version>5.0.0</version>
         <executions>
           <execution>
             <goals>
@@ -102,8 +106,7 @@
             </goals>
             <configuration>
               <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
-              <language>spring</language>
-              <library>spring-boot</library>
+              <generatorName>spring</generatorName>
 
               <configOptions>
                 <sourceFolder>swagger</sourceFolder>
