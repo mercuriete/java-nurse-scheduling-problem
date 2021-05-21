@@ -20,19 +20,19 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ScheduleControllerTests {
+class ScheduleControllerTests {
 
 	@Autowired
 	private MockMvc mockMvc;
 
-	public String loadResource(String path) {
+	private String loadResource(String path) {
 		try (Scanner in = new Scanner(this.getClass().getResourceAsStream(path), "UTF-8")) {
 			return in.useDelimiter("\\A").next();
 		}
 	}
 
 	@Test
-	public void testRequestScheduleExample1() throws Exception {
+	void testRequestScheduleExample1() throws Exception {
 		this.mockMvc
 				.perform(post("/schedule").contentType(MediaType.APPLICATION_JSON)
 				.content(loadResource("../example_1.json")))
@@ -40,7 +40,7 @@ public class ScheduleControllerTests {
 	}
 
 	@Test
-	public void testRequestScheduleExample2() throws Exception {
+	void testRequestScheduleExample2() throws Exception {
 		this.mockMvc
 				.perform(post("/schedule").contentType(MediaType.APPLICATION_JSON)
 				.content(loadResource("../example_2.json")))
