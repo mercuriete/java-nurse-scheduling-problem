@@ -104,7 +104,7 @@
         <!--Plugin for generating stubs from swagger definition -->
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>5.3.1</version>
+        <version>7.9.0</version>
         <executions>
           <execution>
             <goals>
